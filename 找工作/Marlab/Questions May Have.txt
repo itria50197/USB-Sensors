@@ -1,3 +1,0 @@
-1. inherritance
-2. override
-3. overloading
