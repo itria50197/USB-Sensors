@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <libusb.h>
 
-int void main(){
+void main(){
     int init_success = libusb_init(NULL);
     int libusb_success = libusb_set_option(NULL, LIBUSB_OPTION_USE_USBDK);
 
