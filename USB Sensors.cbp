@@ -30,7 +30,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="libusb-1.0.22" />
 		</Compiler>
 		<Linker>
 			<Add directory="libusb-1.0.22" />

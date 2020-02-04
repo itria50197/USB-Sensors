@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <libusb.h>
+#include "libusb.h"
 
 void main(){
     int init_success = libusb_init(NULL);
