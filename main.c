@@ -4,10 +4,14 @@
 
 void main()
 {
-    int return_init, return_setOption;
+    int return_init, return_getOption;
 
     return_init = libusb_init(NULL);
-    //return_setOption = libusb_set_option(NULL,LIBUSB_LOG_LEVEL_WARNING);
+    return_getOption = libusb_set_option(NULL, LIBUSB_OPTION_USE_USBDK);
 
-    //libusb_exit(NULL);
+    discover_devices();
+
+
+
+    libusb_exit(NULL);
 }

@@ -30,7 +30,15 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add directory="libusb-1.0.22/include/libusb-1.0" />
 		</Compiler>
+		<Linker>
+			<Add library="libusb-1.0.22/MS32/dll/libusb-1.0.lib" />
+			<Add directory="libusb-1.0.22/MS32/dll" />
+		</Linker>
+		<Unit filename="discover devices.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
