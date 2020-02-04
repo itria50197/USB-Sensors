@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-1580382604 source:d:\git folders_github\usb-sensors\main.c
+1580796465 source:d:\git folders_github\usb-sensors\main.c
 	<stdio.h>
 	<stdlib.h>
-	<libusb.h>
+	"libusb.h"
 
