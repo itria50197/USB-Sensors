@@ -11,7 +11,5 @@ void main()
 
     discover_devices();
 
-
-
     libusb_exit(NULL);
 }

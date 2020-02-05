@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "libusb.h"
 
-void error(){}
-int is_interesting(libusb_device *device){}
+void error(){printf("Detection Encounter Issues.");}
+int is_interested(libusb_device *device){
+}
 
 void discover_devices(){
     // discover devices
@@ -20,15 +21,12 @@ void discover_devices(){
     {
         for (i = 0; i < num_detectedDevices; i++) {
             libusb_device *device = list[i];
-            if (is_interesting(device)) {
+            if (is_interested(device)) {
                 found = device;
                 break;
             }
         }
     }
-
-
-
 
     if (found) {
         libusb_device_handle *handle;
@@ -41,5 +39,15 @@ void discover_devices(){
 
     libusb_free_device_list(list, 1);
 }
+
+
+
+/* Wait to be added
+
+int libusb_open	(	libusb_device * 	dev,libusb_device_handle ** 	dev_handle )
+
+libusb_device* libusb_get_device	(	libusb_device_handle * 	dev_handle	)
+
+*/
 
 
