@@ -13,10 +13,11 @@
 	<windows.h>
 	<winsock.h>
 
-1580880938 source:c:\git projects_github\usb-sensors\discover devices.c
+1580979251 source:c:\git projects_github\usb-sensors\discover devices.c
 	<stdio.h>
 	<stdlib.h>
-	"libusb.h"
+	<windows.h>
+	<libusb.h>
 
 1580812836 c:\git projects_github\usb-sensors\libusb-1.0.22\include\libusb-1.0\libusb.h
 	<stdint.h>
@@ -27,10 +28,11 @@
 	<windows.h>
 	<winsock.h>
 
-1580812836 source:c:\git projects_github\usb-sensors\main.c
+1580982992 source:c:\git projects_github\usb-sensors\main.c
 	<stdio.h>
 	<stdlib.h>
-	"libusb.h"
+	<windows.h>
+	<libusb.h>
 
 1580898553 source:d:\git folders_github\usb-sensors\discover devices.c
 	<stdio.h>

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "libusb.h"
+#include <windows.h>
+#include <libusb.h>
 
 void error(){printf("Detection Encounter Issues.");}
 int is_interested(libusb_device *device){
@@ -13,7 +14,11 @@ void discover_devices(){
     ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
     ssize_t i = 0;
     int err = 0;
-    if (num_detectedDevices < 0)
+
+    printf("%d\n", num_detectedDevices);
+    printf("%d\n", err);
+
+    if (err == 0)
     {
         error();
     }
