@@ -6,10 +6,12 @@
 void discover_devices(){ // discover devices
     int num_detectedDevices, i, err;
     libusb_device **list, *device;
+    libusb_device *found = NULL;
     libusb_device_handle *device_handle;
 
     num_detectedDevices = (int)libusb_get_device_list(NULL, &list); //ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
-    libusb_device *found[num_detectedDevices];
+    printf("num_detectedDevices = %d\n", num_detectedDevices);
+
     i = 0; //ssize_t i = 0;
     err = 0;
 
@@ -21,22 +23,26 @@ void discover_devices(){ // discover devices
     {
         for (i = 0; i < num_detectedDevices; i++) {
             device = list[i];
-            found[i] = device;
+            found = device;
+            /*
             if (interested_device(device, device_handle)) {
                 found[i] = device;
                 break;
             }
+            */
+
+            if (found) {
+                libusb_device_handle *handle;
+
+                err = libusb_open(found, &handle);
+                if (err)
+                    error();
+                // etc
+            }
         }
     }
 
-    if (found) {
-        libusb_device_handle *handle;
 
-        err = libusb_open(found, &handle);
-        if (err)
-            error();
-        // etc
-    }
 
     //libusb_close();
     libusb_free_device_list(list, 1);
