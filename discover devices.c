@@ -3,22 +3,25 @@
 #include <windows.h>
 #include <libusb.h>
 
-void error(){printf("Detection Encounter Issues.");}
+void error(){printf("Detection Encounter Issues");}
 int is_interested(libusb_device *device){
 }
 
 void discover_devices(){
+    int num_detectedDevices, i, err;
+
     // discover devices
     libusb_device **list;
     libusb_device *found = NULL;
-    ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
-    ssize_t i = 0;
-    int err = 0;
+    //ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
+    num_detectedDevices = (int)libusb_get_device_list(NULL, &list);
+    //ssize_t i = 0;
+    i = 0;
+    err = 0;
 
-    printf("%d\n", num_detectedDevices);
-    printf("%d\n", err);
+    //print_messages_discover(num_detectedDevices, err);
 
-    if (err == 0)
+    if (num_detectedDevices < 0)
     {
         error();
     }
@@ -45,7 +48,12 @@ void discover_devices(){
     libusb_free_device_list(list, 1);
 }
 
-
+void print_messages_discover(ssize_t num_detectedDevices, int err){
+    printf("From discover_devices()\n");
+    printf("num_detectedDevices = %d\n", num_detectedDevices);
+    printf("err = %d\n", err);
+    printf("End of discover_devices()\n");
+}
 
 /* Wait to be added
 
