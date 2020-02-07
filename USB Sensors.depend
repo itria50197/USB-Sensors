@@ -13,7 +13,7 @@
 	<windows.h>
 	<winsock.h>
 
-1581049473 source:c:\git projects_github\usb-sensors\discover devices.c
+1581052448 source:c:\git projects_github\usb-sensors\discover devices.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -28,7 +28,7 @@
 	<windows.h>
 	<winsock.h>
 
-1581048641 source:c:\git projects_github\usb-sensors\main.c
+1581053261 source:c:\git projects_github\usb-sensors\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>

@@ -4,22 +4,16 @@
 #include <libusb.h>
 
 void error(){printf("Detection Encounter Issues");}
-int is_interested(libusb_device *device){
-}
+int interested_device(libusb_device *device){}
 
-void discover_devices(){
+void discover_devices(){ // discover devices
     int num_detectedDevices, i, err;
+    libusb_device **list, *device;
 
-    // discover devices
-    libusb_device **list;
-    libusb_device *found = NULL;
-    //ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
-    num_detectedDevices = (int)libusb_get_device_list(NULL, &list);
-    //ssize_t i = 0;
-    i = 0;
+    num_detectedDevices = (int)libusb_get_device_list(NULL, &list); //ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
+    libusb_device *found[num_detectedDevices];
+    i = 0; //ssize_t i = 0;
     err = 0;
-
-    //print_messages_discover(num_detectedDevices, err);
 
     if (num_detectedDevices < 0)
     {
@@ -28,11 +22,14 @@ void discover_devices(){
     else
     {
         for (i = 0; i < num_detectedDevices; i++) {
-            libusb_device *device = list[i];
-            if (is_interested(device)) {
+            device = list[i];
+            found[i] = device;
+            /*
+            if (interested_device(device)) {
                 found = device;
                 break;
             }
+            */
         }
     }
 
@@ -45,6 +42,7 @@ void discover_devices(){
         // etc
     }
 
+    print_messages_discover(num_detectedDevices, err);
     libusb_free_device_list(list, 1);
 }
 
