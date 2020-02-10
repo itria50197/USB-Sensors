@@ -25,9 +25,7 @@ void discover_devices(){ // discover devices
         for (i = num_detectedDevices; i > 0; i--) {
             printf("i = %d\n", i);
             device = list[i];
-            //found = device;
 
-            //printf("interested_device = %d",interested_device(device, &device_handle));
             /*
             if (interested_device(device, &device_handle)) {
                 libusb_device_handle *handle;
