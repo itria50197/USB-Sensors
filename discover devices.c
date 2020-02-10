@@ -12,7 +12,7 @@ void discover_devices(){ // discover devices
     num_detectedDevices = (int)libusb_get_device_list(NULL, &list); //ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
     printf("num_detectedDevices = %d\n", num_detectedDevices);
 
-    i = 0; //ssize_t i = 0;
+    //i = 0; //ssize_t i = 0;
     err = 0;
 
     if (num_detectedDevices < 0)
@@ -21,7 +21,7 @@ void discover_devices(){ // discover devices
     }
     else
     {
-        for (i = 0; i < num_detectedDevices; i++) {
+        for (i = num_detectedDevices; i > 0; i--) {
             device = list[i];
             found = device;
             /*
