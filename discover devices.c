@@ -31,14 +31,14 @@ void discover_devices(){ // discover devices
             }
             */
 
-            if (found) {
-                libusb_device_handle *handle;
+            //if (found) {
+            libusb_device_handle *handle;
 
-                err = libusb_open(found, &handle);
-                if (err)
-                    error();
+            err = libusb_open(found, &handle);
+            if (err)
+                error();
                 // etc
-            }
+            //}
         }
     }
 
