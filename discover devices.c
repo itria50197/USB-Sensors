@@ -34,13 +34,6 @@ void discover_devices(){ // discover devices
     libusb_free_device_list(list, num_detectedDevices);
 }
 
-void print_messages_discover(ssize_t num_detectedDevices, int err){
-    printf("From discover_devices()\n");
-    printf("num_detectedDevices = %d\n", num_detectedDevices);
-    printf("err = %d\n", err);
-    printf("End of discover_devices()\n");
-}
-
 void error(){printf("Detection Encounter Issues");}
 
 int interested_device(libusb_device *device, libusb_device_handle **device_handle){
