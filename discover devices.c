@@ -26,52 +26,14 @@ void discover_devices(){ // discover devices
         for (ssize_t i = 0; i < num_detectedDevices; i++) {
             libusb_device *device = list[i];
             printf("i = %d\n", i);
-<<<<<<< HEAD
+
             struct libusb_device_descriptor device_descriptor;
             get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor);
 
             printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
-=======
-            device = list[i];
-
-            /*
-            if (interested_device(device, &device_handle)) {
-                libusb_device_handle *handle;
-                device_open_status = libusb_open(device, &handle);
-                printf("device_open_status = %d\n", device_open_status);
-
-                if (device_open_status != 0){
-                    switch(device_open_status)
-                    {
-                        case LIBUSB_ERROR_NO_MEM:
-                            printf("Memory Allocation Failure");
-                            break;
-
-                        case LIBUSB_ERROR_ACCESS:
-                            printf("Insufficient Permissions");
-                            break;
-
-                        case LIBUSB_ERROR_NO_DEVICE:
-                            printf("Device Disconnected");
-                            break;
-
-                        default:
-                            printf("Unknown Failure");
-                    }
-                }
-            }
-            */
-                // etc
-            //}
->>>>>>> d018b882154ff3f1e81c605619b5ef932cda376d
         }
-        libusb_free_device_list(list, num_detectedDevices);
     }
-
-
-
-    //libusb_close();
-    libusb_free_device_list(list, 1);
+    libusb_free_device_list(list, num_detectedDevices);
 }
 
 void print_messages_discover(ssize_t num_detectedDevices, int err){
