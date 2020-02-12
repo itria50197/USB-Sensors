@@ -12,10 +12,10 @@ void main()
     return_setOption = libusb_set_option(NULL, LIBUSB_OPTION_USE_USBDK);
     return_getOption = libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_WARNING);
 
-    print_messages();
+    //print_messages();
     discover_devices();
 
-    libusb_exit(NULL);
+    libusb_exit(context);
 }
 
 void print_messages(int return_init, int return_setOption, int return_getOption){

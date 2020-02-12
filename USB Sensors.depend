@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1581070655 source:d:\git folders_github\usb-sensors\main.c
+1581477664 source:d:\git folders_github\usb-sensors\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -35,9 +35,10 @@
 	<windows.h>
 	<libusb.h>
 
-1581070744 source:d:\git folders_github\usb-sensors\discover devices.c
+1581407514 source:d:\git folders_github\usb-sensors\discover devices.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
 	<libusb.h>
+	<usb.h>
 
