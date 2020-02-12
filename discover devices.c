@@ -4,15 +4,13 @@
 #include <libusb.h>
 
 void discover_devices(){ // discover devices
-    int num_detectedDevices, device_open_status, get_device_descriptor;
-
+    int device_open_status, get_device_descriptor;
     libusb_context *context = NULL;
     libusb_device **list = NULL;
-
     libusb_device *found = NULL;
     libusb_device_handle *device_handle;
 
-    num_detectedDevices = libusb_get_device_list(context, &list); //ssize_t num_detectedDevices = libusb_get_device_list(NULL, &list);
+    ssize_t num_detectedDevices = libusb_get_device_list(context, &list);
     printf("num_detectedDevices = %d\n", num_detectedDevices);
 
     device_open_status = 0;
