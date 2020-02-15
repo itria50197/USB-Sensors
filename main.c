@@ -13,8 +13,7 @@ void main()
     return_getOption = libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_WARNING);
 
     discover_devices();
-    interested_device();
-    libusb_free_device_list(list, num_detectedDevices);
+    //libusb_free_device_list(list, num_detectedDevices);
 
     libusb_exit(context);
 }
@@ -26,6 +25,7 @@ void discover_devices() // discover devices
     libusb_device **list = NULL;
     libusb_device *found = NULL;
     libusb_device_handle *device_handle;
+    libusb_device *device;
 
     ssize_t num_detectedDevices = libusb_get_device_list(context, &list);
     printf("num_detectedDevices = %d\n", num_detectedDevices);
@@ -40,27 +40,48 @@ void discover_devices() // discover devices
     {
         for(ssize_t i = 0; i < num_detectedDevices; i++)
         {
-            libusb_device *device = list[i];
+            device = list[i];
+            //libusb_device *device = list[i];
             struct libusb_device_descriptor device_descriptor;
 
             printf("i = %d\n", i);
             get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor);
             printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
         }
+        interested_device(device, &device_handle);
     }
 }
 
 void error(){printf("Issues Occur");}
 
-void interested_device(){
+void interested_device(libusb_device *device, libusb_device_handle **device_handle){
     int open_result = libusb_open(device, &device_handle);
+    printf("open_result = %d\nError Occurred: ", open_result);
 
+    switch(open_result)
+    {
+    case LIBUSB_ERROR_NO_MEM:
+        printf("memory allocation failure\n");
+        break;
+
+    case LIBUSB_ERROR_ACCESS:
+        printf("insufficient permissions\n");
+        break;
+
+    case LIBUSB_ERROR_NO_DEVICE:
+        printf("device has been disconnected\n");
+        break;
+
+    default:
+        printf("other failure\n");
+    }
+/*
     if (open_result == 0)
         printf("Device Opened");
     else
         error();
+*/
 }
-
 
 
 /*
