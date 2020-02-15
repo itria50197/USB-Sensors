@@ -56,6 +56,7 @@ void error(){printf("Issues Occur");}
 
 void interested_device(libusb_device *device, libusb_device_handle **device_handle){
     int open_result = libusb_open(device, &device_handle); // Try libusb_open_device_with_vid_pid() next time
+
     printf("open_result = %d\nError Occurred: ", open_result);
 
     switch(open_result)

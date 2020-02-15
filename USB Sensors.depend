@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1581498169 source:d:\git folders_github\usb-sensors\main.c
+1581740329 source:d:\git folders_github\usb-sensors\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
