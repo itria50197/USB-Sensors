@@ -13,7 +13,6 @@ void main()
     return_getOption = libusb_set_option(NULL, LIBUSB_OPTION_LOG_LEVEL, LIBUSB_LOG_LEVEL_WARNING);
 
     discover_devices();
-    //libusb_free_device_list(list, num_detectedDevices);
 
     libusb_exit(context);
 }
@@ -36,31 +35,39 @@ void discover_devices() // discover devices
     {
         error();
     }
+
     else
     {
+        struct libusb_device_descriptor device_descriptor;
         for(ssize_t i = 0; i < num_detectedDevices; i++)
         {
             device = list[i];
             //libusb_device *device = list[i];
-            struct libusb_device_descriptor device_descriptor;
+            //struct libusb_device_descriptor device_descriptor;
 
             printf("i = %d\n", i);
             get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor);
             printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
         }
-        interested_device(device, &device_handle);
+        interested_device(device, &device_handle, context, device_descriptor.idVendor, device_descriptor.idProduct);
+        libusb_free_device_list(list, num_detectedDevices);
     }
 }
 
 void error(){printf("Issues Occur");}
 
-void interested_device(libusb_device *device, libusb_device_handle **device_handle){
-    int open_result = libusb_open(device, &device_handle); // Try libusb_open_device_with_vid_pid() next time
+void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context, int VENDOR_ID, int PRODUCT_ID){
+    //int open_result = libusb_open(device, &device_handle); // Try libusb_open_device_with_vid_pid() next time
+    int open_result = libusb_open_device_with_vid_pid(context, VENDOR_ID, PRODUCT_ID);
 
-    printf("open_result = %d\nError Occurred: ", open_result);
+    printf("open_result = %d\nConnection Status: ", open_result);
 
     switch(open_result)
     {
+    case 0:
+        printf("Device open succeed\n");
+        break;
+
     case LIBUSB_ERROR_NO_MEM:
         printf("memory allocation failure\n");
         break;

@@ -36,9 +36,6 @@
 			<Add library="libusb-1.0.22/MS32/dll/libusb-1.0.lib" />
 			<Add directory="libusb-1.0.22/MS32/dll" />
 		</Linker>
-		<Unit filename="discover devices.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
