@@ -42,21 +42,12 @@ void discover_devices() // discover devices
         for(ssize_t i = 0; i < num_detectedDevices; i++)
         {
             device = list[i];
-            //libusb_device *device = list[i];
-            //struct libusb_device_descriptor device_descriptor;
 
             printf("i = %d\n", i);
             get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor); // IDs: 064b 784c
             printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
         }
 
-        ///////////////////////////////////////// Problems occur /////////////////////////////////////////////////////
-        uint16_t VENDOR_ID = 0x64b; // Sensor's Vendor ID
-        uint16_t PRODUCT_ID = 0x784c; // Sensor's Product ID
-        ///////////////////////////////////////// Problems occur /////////////////////////////////////////////////////
-
-        //interested_device(device, &device_handle, context, device_descriptor.idVendor, device_descriptor.idProduct);
-        //interested_device(device, &device_handle, context, VENDOR_ID, PRODUCT_ID);
         interested_device(device, &device_handle, context);
         libusb_free_device_list(list, num_detectedDevices);
     }
@@ -64,12 +55,17 @@ void discover_devices() // discover devices
 
 void error(){printf("Issues Occur");}
 
-//void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context, uint16_t VENDOR_ID, uint16_t PRODUCT_ID){
+/*
+With the above information in mind, the process of opening a device can be viewed as follows:
+1. Discover devices using libusb_get_device_list().
+2. Choose the device that you want to operate, and call libusb_open().
+3. Unref all devices in the discovered device list.
+4. Free the discovered device list.
+*/
 void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context){
-    //int open_result = libusb_open(device, &device_handle); // Try libusb_open_device_with_vid_pid() next time
-    int open_result = libusb_open(device, &device_handle);
 
-    //printf("open_result = %d\n", open_result);
+    int open_result = libusb_open(device, &device_handle);
+    printf("open_result = %d\n", open_result);
 
     switch(open_result)
     {
