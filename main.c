@@ -23,7 +23,7 @@ void discover_devices() // discover devices
     libusb_context *context = NULL;
     libusb_device **list = NULL;
     libusb_device *found = NULL;
-    libusb_device_handle *device_handle;
+    libusb_device_handle *device_handle = NULL;
     libusb_device *device;
 
     ssize_t num_detectedDevices = libusb_get_device_list(context, &list);
@@ -42,10 +42,7 @@ void discover_devices() // discover devices
         for(ssize_t i = 0; i < num_detectedDevices; i++)
         {
             device = list[i];
-
             printf("i = %d\n", i);
-            get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor); // IDs: 064b 784c
-            printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
         }
 
         interested_device(device, &device_handle, context);
@@ -64,6 +61,7 @@ With the above information in mind, the process of opening a device can be viewe
 */
 void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context){
 
+    device = libusb_get_device(device_handle);
     int open_result = libusb_open(device, &device_handle);
     printf("open_result = %d\n", open_result);
 
