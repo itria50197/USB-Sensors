@@ -51,44 +51,82 @@ void discover_devices() // discover devices
         }
 
         ///////////////////////////////////////// Problems occur /////////////////////////////////////////////////////
-        int VENDOR_ID = 0x64b; // Sensor's Vendor ID
-        int PRODUCT_ID = 0x784c; // Sensor's Product ID
+        uint16_t VENDOR_ID = 0x64b; // Sensor's Vendor ID
+        uint16_t PRODUCT_ID = 0x784c; // Sensor's Product ID
         ///////////////////////////////////////// Problems occur /////////////////////////////////////////////////////
 
         //interested_device(device, &device_handle, context, device_descriptor.idVendor, device_descriptor.idProduct);
-        interested_device(device, &device_handle, context, VENDOR_ID, PRODUCT_ID);
+        //interested_device(device, &device_handle, context, VENDOR_ID, PRODUCT_ID);
+        interested_device(device, &device_handle, context);
         libusb_free_device_list(list, num_detectedDevices);
     }
 }
 
 void error(){printf("Issues Occur");}
 
-void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context, int VENDOR_ID, int PRODUCT_ID){
+//void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context, uint16_t VENDOR_ID, uint16_t PRODUCT_ID){
+void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context){
     //int open_result = libusb_open(device, &device_handle); // Try libusb_open_device_with_vid_pid() next time
-    int open_result = libusb_open_device_with_vid_pid(context, VENDOR_ID, PRODUCT_ID);
+    int open_result = libusb_open(device, &device_handle);
 
-    printf("open_result = %d\nConnection Status: ", open_result);
+    //printf("open_result = %d\n", open_result);
 
     switch(open_result)
     {
     case 0:
-        printf("Device open succeed\n");
+        printf("Connection Status: Device open succeed\n");
         break;
 
-    case LIBUSB_ERROR_NO_MEM:
-        printf("memory allocation failure\n");
+    case LIBUSB_ERROR_IO:
+        printf("Connection Status: IO Error\n");
+        break;
+
+    case LIBUSB_ERROR_INVALID_PARAM:
+        printf("Connection Status: invalid parameters\n");
         break;
 
     case LIBUSB_ERROR_ACCESS:
-        printf("insufficient permissions\n");
+        printf("Connection Status: Error Access\n");
         break;
 
     case LIBUSB_ERROR_NO_DEVICE:
-        printf("device has been disconnected\n");
+        printf("Connection Status: No devices detected\n");
+        break;
+
+    case LIBUSB_ERROR_NOT_FOUND:
+        printf("Connection Status: Devices not found\n");
+        break;
+
+    case LIBUSB_ERROR_BUSY:
+        printf("Connection Status: Devices busy\n");
+        break;
+
+    case LIBUSB_ERROR_TIMEOUT:
+        printf("Connection Status: Connection time-out\n");
+        break;
+
+    case LIBUSB_ERROR_OVERFLOW:
+        printf("Connection Status: Overflow\n");
+        break;
+
+    case LIBUSB_ERROR_PIPE:
+        printf("Connection Status: Pipe Error\n");
+        break;
+
+    case LIBUSB_ERROR_INTERRUPTED:
+        printf("Connection Status: Interrupted\n");
+        break;
+
+    case LIBUSB_ERROR_NO_MEM:
+        printf("Connection Status: No memory\n");
+        break;
+
+    case LIBUSB_ERROR_NOT_SUPPORTED:
+        printf("Connection Status: Devices not supported\n");
         break;
 
     default:
-        printf("other failure\n");
+        printf("Connection Status: other failure\n");
     }
 }
 
