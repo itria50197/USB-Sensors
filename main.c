@@ -49,7 +49,14 @@ void discover_devices() // discover devices
             get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor); // IDs: 064b 784c
             printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
         }
-        interested_device(device, &device_handle, context, device_descriptor.idVendor, device_descriptor.idProduct);
+
+        ///////////////////////////////////////// Problems occur /////////////////////////////////////////////////////
+        int VENDOR_ID = 0x64b; // Sensor's Vendor ID
+        int PRODUCT_ID = 0x784c; // Sensor's Product ID
+        ///////////////////////////////////////// Problems occur /////////////////////////////////////////////////////
+
+        //interested_device(device, &device_handle, context, device_descriptor.idVendor, device_descriptor.idProduct);
+        interested_device(device, &device_handle, context, VENDOR_ID, PRODUCT_ID);
         libusb_free_device_list(list, num_detectedDevices);
     }
 }
