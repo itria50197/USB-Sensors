@@ -46,7 +46,7 @@ void discover_devices() // discover devices
             //struct libusb_device_descriptor device_descriptor;
 
             printf("i = %d\n", i);
-            get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor);
+            get_device_descriptor = libusb_get_device_descriptor(device, &device_descriptor); // IDs: 064b 784c
             printf("Vendor:Device = %04x:%04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
         }
         interested_device(device, &device_handle, context, device_descriptor.idVendor, device_descriptor.idProduct);
@@ -83,12 +83,6 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
     default:
         printf("other failure\n");
     }
-/*
-    if (open_result == 0)
-        printf("Device Opened");
-    else
-        error();
-*/
 }
 
 
