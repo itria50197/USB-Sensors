@@ -14,6 +14,8 @@ void main()
 
     discover_devices();
 
+    /* Release Memory */
+    libusb_close(context);
     libusb_exit(context);
 }
 
@@ -30,6 +32,7 @@ void discover_devices() // discover devices
     printf("num_detectedDevices = %d\n\n", num_detectedDevices);
 
     device_open_status = 0;
+
 
     if (num_detectedDevices < 0)
     {
@@ -48,7 +51,6 @@ void discover_devices() // discover devices
             interested_device(device, &device_handle, context);
             printf("\n");
         }
-
         libusb_free_device_list(list, num_detectedDevices);
     }
 }
