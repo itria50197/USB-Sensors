@@ -3,6 +3,10 @@
 #include <windows.h>
 #include <libusb.h>
 
+#define USB_ENDPOINT_IN (LIBUSB_ENDPOINT_IN | 1) // endpoint address
+#define USB_ENDPOINT_OUT (LIBUSB_ENDPOINT_OUT | 2) // endpoint address
+#define LEN_IN_BUFFER 1024*8
+
 void main()
 {
     int return_init, return_setOption, return_getOption;
@@ -15,6 +19,7 @@ void main()
     discover_devices();
 
     /* Release Memory */
+    //libusb_free_device_list(&list, unref_devices);
     libusb_close(context);
     libusb_exit(context);
 }
@@ -32,7 +37,6 @@ void discover_devices() // discover devices
     printf("num_detectedDevices = %d\n\n", num_detectedDevices);
 
     device_open_status = 0;
-
 
     if (num_detectedDevices < 0)
     {
@@ -74,6 +78,85 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
     {
     case 0:
         printf("Connection Status: Device open succeed\n");
+        int portNum = 0;
+        portNum = libusb_get_port_number(device);
+        printf("Port Number: %d\n", portNum);
+
+        int busNum = 0;
+        busNum = libusb_get_bus_number(device);
+        printf("Bus Number: %d\n", busNum);
+
+        int deviceSpeed = 0;
+        deviceSpeed = libusb_get_device_speed(device);
+        printf("Device Speed");
+
+
+        switch(deviceSpeed)
+        {
+        case LIBUSB_SPEED_UNKNOWN:
+            printf("Speed Unknown\n");
+            break;
+
+        case LIBUSB_SPEED_LOW:
+            printf("Speed Low\n");
+            break;
+
+        case LIBUSB_SPEED_FULL:
+            printf("Speed Full\n");
+            break;
+
+        case LIBUSB_SPEED_HIGH:
+            printf("Speed High\n");
+            break;
+
+        case LIBUSB_SPEED_SUPER:
+            printf("Speed Super\n");
+            break;
+
+        case LIBUSB_SPEED_SUPER_PLUS:
+            printf("Speed Super Plus\n");
+            break;
+
+        default:
+            break;
+        }
+
+        int interface_claim = libusb_claim_interface(device_handle, 0);
+        switch(interface_claim)
+        {
+        case 0:
+            printf("Interface Claim Succeeds\n");
+            struct libusb_transfer *transfer_in = libusb_alloc_transfer(0);
+/*
+            static uint32_t in_buffer[LEN_IN_BUFFER];
+            libusb_fill_bulk_stream_transfer(transfer_in,
+                                             device_handle,
+                                             USB_ENDPOINT_IN,
+                                             in_buffer,
+                                             LEN_IN_BUFFER,
+                                             64,
+                                             NULL,
+                                             xfr_cb,
+                                             3000);
+*/
+            break;
+
+        case LIBUSB_ERROR_NOT_FOUND:
+            printf("Interface Claim not found\n");
+            break;
+
+        case LIBUSB_ERROR_BUSY:
+            printf("Interface Claim busy\n");
+            break;
+
+        case LIBUSB_ERROR_NO_DEVICE:
+            printf("Interface Claim no device\n");
+            break;
+
+        default:
+            printf("Interface Claim other errors\n");
+        }
+
         break;
 
     case LIBUSB_ERROR_IO:
@@ -128,7 +211,6 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
         printf("Connection Status: other failure\n");
     }
 }
-
 
 /*
 libusb_context *ctx = NULL; //a libusb session
