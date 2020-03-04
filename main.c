@@ -127,17 +127,17 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
         case 0:
             printf("Interface Claim Succeeds\n");
             struct libusb_transfer *transfer_in = libusb_alloc_transfer(0);
+
+            //libusb_fill_bulk_transfer();
 /*
-            static uint32_t in_buffer[LEN_IN_BUFFER];
-            libusb_fill_bulk_stream_transfer(transfer_in,
-                                             device_handle,
-                                             USB_ENDPOINT_IN,
-                                             in_buffer,
-                                             LEN_IN_BUFFER,
-                                             64,
-                                             NULL,
-                                             xfr_cb,
-                                             3000);
+            static void libusb_fill_bulk_transfer(struct libusb_transfer * 	transfer,
+                                                  libusb_device_handle * 	dev_handle,
+                                                  unsigned char 	endpoint,
+                                                  unsigned char * 	buffer,
+                                                  int 	length,
+                                                  libusb_transfer_cb_fn 	callback,
+                                                  void * 	user_data,
+                                                  unsigned int 	timeout);
 */
             break;
 
