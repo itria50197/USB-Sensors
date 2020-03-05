@@ -135,37 +135,9 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             printf("Interface Number: %d\n", ifDescriptor.bInterfaceNumber);
             printf("Endpoint Number (Used by This Interface): %d\n", ifDescriptor.bNumEndpoints);
 
-            //struct libusb_transfer *libusb_alloc_transfer(int iso_packets);
-            int Bulk_Transfer_Result = libusb_bulk_transfer(device_handle, (3|LIBUSB_ENDPOINT_IN), data, 4, &actual, 0);
-            switch(Bulk_Transfer_Result)
-            {
-            case 0:
-                printf("Endpoint Address Return: Transfer succeeds\n");
-                break;
-
-            case LIBUSB_ERROR_TIMEOUT:
-                printf("Endpoint Address Return: Transfer timeout\n");
-                break;
-
-            case LIBUSB_ERROR_PIPE:
-                printf("Endpoint Address Return: Endpoint halt\n");
-                break;
-
-            case LIBUSB_ERROR_OVERFLOW:
-                printf("Endpoint Address Return: Overflow\n");
-                break;
-
-            case LIBUSB_ERROR_NO_DEVICE:
-                printf("Endpoint Address Return: Devices disconnected\n");
-                break;
-
-            case LIBUSB_ERROR_BUSY:
-                printf("Endpoint Address Return: Busy\n");
-                break;
-
-            default:
-                printf("Endpoint Address Return: Other error\n");
-            }
+            /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
+            struct libusb_transfer *transfer = libusb_alloc_transfer(0);
+            printf("Retrieved Data = %d\n", transfer);
 
             int active_or_not = libusb_kernel_driver_active(device_handle, 0);
             switch(active_or_not)
