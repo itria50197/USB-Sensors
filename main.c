@@ -3,11 +3,7 @@
 #include <windows.h>
 #include <libusb.h>
 
-#define USB_ENDPOINT_IN (LIBUSB_ENDPOINT_IN | 1) // endpoint address
-#define USB_ENDPOINT_OUT (LIBUSB_ENDPOINT_OUT | 2) // endpoint address
-#define LEN_IN_BUFFER 1024*8
-
-void main()
+void main(int argc, char *argv[])
 {
     int return_init, return_setOption, return_getOption;
     libusb_context *context = NULL;
@@ -72,8 +68,10 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
 
     //device = libusb_get_device(device_handle);
     int open_result = libusb_open(device, &device_handle);
-    //printf("open_result = %d\n", open_result);
+    //unsigned char *data[4] = "abcd";
+    unsigned char data[4] = "abcd";
 
+    //printf("open_result = %d\n", open_result);
     switch(open_result)
     {
     case 0:
@@ -126,9 +124,69 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
         {
         case 0:
             printf("Interface Claim Succeeds\n");
-            struct libusb_transfer *transfer_in = libusb_alloc_transfer(0);
+            printf("Data to transfer: %s\n", data);
 
-            //libusb_fill_bulk_transfer();
+            int actual;
+            struct libusb_endpoint_descriptor epDescriptor;
+            printf("Endpoint Address: %d\n",epDescriptor.bEndpointAddress);
+            int r = libusb_bulk_transfer(device_handle, (3|LIBUSB_ENDPOINT_IN), data, 4, &actual, 0);
+            switch(r)
+            {
+            case 0:
+                printf("Transfer succeeds");
+                break;
+
+            case LIBUSB_ERROR_TIMEOUT:
+                printf("Transfer timeout");
+                break;
+
+            case LIBUSB_ERROR_PIPE:
+                printf("Endpoint halt");
+                break;
+
+            case LIBUSB_ERROR_OVERFLOW:
+                printf("Overflow");
+                break;
+
+            case LIBUSB_ERROR_NO_DEVICE:
+                printf("Devices disconnected");
+                break;
+
+            case LIBUSB_ERROR_BUSY:
+                printf("Busy");
+                break;
+
+            default:
+                printf("Other error");
+            }
+
+            int active_or_not = libusb_kernel_driver_active(device_handle, 0);
+            switch(active_or_not)
+            {
+            case 0:
+                printf("no active driver\n");
+                break;
+
+            case 1:
+                printf("driver active\n");
+                break;
+
+            case LIBUSB_ERROR_NO_DEVICE:
+                printf("no device\n");
+                break;
+
+            case LIBUSB_ERROR_NOT_SUPPORTED:
+                printf("not supported\n");
+                break;
+
+            default:
+                printf("other error\n");
+            }
+
+
+
+            //struct libusb_transfer *transfer_in = libusb_alloc_transfer(0);
+            //libusb_fill_bulk_transfer(transfer_in, device_handle, Transfer::endpoint, Transfer::buffer, Transfer::length, Transfer::callback, Transfer::user_data, 3000);
 /*
             static void libusb_fill_bulk_transfer(struct libusb_transfer * 	transfer,
                                                   libusb_device_handle * 	dev_handle,
