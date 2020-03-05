@@ -41,3 +41,18 @@
 	<windows.h>
 	<libusb.h>
 
+1583426584 source:d:\app projects\usb-sensors\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<libusb.h>
+
+1580435153 d:\app projects\usb-sensors\libusb-1.0.22\include\libusb-1.0\libusb.h
+	<stdint.h>
+	<sys/types.h>
+	<sys/time.h>
+	<time.h>
+	<limits.h>
+	<windows.h>
+	<winsock.h>
+

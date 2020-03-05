@@ -139,6 +139,9 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             struct libusb_transfer *transfer = libusb_alloc_transfer(0);
             printf("Retrieved Data = %X\n", transfer);
 
+            int *transfer_ = libusb_alloc_transfer(0);
+            printf("Retrieved Data = %d\n", transfer_);
+
             int active_or_not = libusb_kernel_driver_active(device_handle, 0);
             switch(active_or_not)
             {
