@@ -46,6 +46,7 @@ void discover_devices() // discover devices
         {
             device = list[i];
             printf("i = %d\n", i);
+
             libusb_get_device_descriptor(device, &device_descriptor);
             printf("Vendor ID = %04x : Product ID = %04x\n", device_descriptor.idVendor, device_descriptor.idProduct);
             interested_device(device, &device_handle, context);
@@ -86,7 +87,7 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
 
         int deviceSpeed = 0;
         deviceSpeed = libusb_get_device_speed(device);
-        printf("Device Speed");
+        printf("Device Speed: ");
 
 
         switch(deviceSpeed)
@@ -129,6 +130,12 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             int actual;
             struct libusb_endpoint_descriptor epDescriptor;
             printf("Endpoint Address: %d\n",epDescriptor.bEndpointAddress);
+
+            struct libusb_interface_descriptor ifDescriptor;
+            printf("Interface Number: %d\n", ifDescriptor.bInterfaceNumber);
+            printf("Endpoint Number (Used by This Interface): %d\n", ifDescriptor.bNumEndpoints);
+
+            //struct libusb_transfer *libusb_alloc_transfer(int iso_packets);
             int Bulk_Transfer_Result = libusb_bulk_transfer(device_handle, (3|LIBUSB_ENDPOINT_IN), data, 4, &actual, 0);
             switch(Bulk_Transfer_Result)
             {
