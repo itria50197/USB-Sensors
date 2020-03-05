@@ -133,31 +133,31 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             switch(r)
             {
             case 0:
-                printf("Transfer succeeds");
+                printf("Endpoint Address Return: Transfer succeeds");
                 break;
 
             case LIBUSB_ERROR_TIMEOUT:
-                printf("Transfer timeout");
+                printf("Endpoint Address Return: Transfer timeout");
                 break;
 
             case LIBUSB_ERROR_PIPE:
-                printf("Endpoint halt");
+                printf("Endpoint Address Return: Endpoint halt");
                 break;
 
             case LIBUSB_ERROR_OVERFLOW:
-                printf("Overflow");
+                printf("Endpoint Address Return: Overflow");
                 break;
 
             case LIBUSB_ERROR_NO_DEVICE:
-                printf("Devices disconnected");
+                printf("Endpoint Address Return: Devices disconnected");
                 break;
 
             case LIBUSB_ERROR_BUSY:
-                printf("Busy");
+                printf("Endpoint Address Return: Busy");
                 break;
 
             default:
-                printf("Other error");
+                printf("Endpoint Address Return: Other error");
             }
 
             int active_or_not = libusb_kernel_driver_active(device_handle, 0);
