@@ -139,8 +139,10 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             struct libusb_transfer *transfer = libusb_alloc_transfer(0);
-            int ret = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
-            printf("Configure Value Returned = %d\n", ret);
+            int config_set_result = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
+            libusb_set_iso_packet_lengths(transfer, libusb_get_max_iso_packet_size(device, epDescriptor.bEndpointAddress));
+
+            printf("Configure Value Returned = %d\n", config_set_result);
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
