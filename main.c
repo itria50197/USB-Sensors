@@ -136,11 +136,14 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             printf("Endpoint Number (Used by This Interface): %d\n", ifDescriptor.bNumEndpoints);
 
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
+            /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
+            /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             struct libusb_transfer *transfer = libusb_alloc_transfer(0);
-            printf("Retrieved Data = %X\n", transfer);
-
-            int *transfer_ = libusb_alloc_transfer(0);
-            printf("Retrieved Data = %d\n", transfer_);
+            int ret = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
+            printf("Configure Value Returned = %d\n", ret);
+            /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
+            /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
+            /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
 
             int active_or_not = libusb_kernel_driver_active(device_handle, 0);
             switch(active_or_not)
