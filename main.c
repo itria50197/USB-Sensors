@@ -152,7 +152,12 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
                                      (*transfer).user_data,
                                      3000);
 
+            int submit_transfer = libusb_submit_transfer(transfer);
+
             printf("Configure Value Returned = %d\n", config_set_result);
+            printf("Data Buffer = %s\n", (*transfer).buffer);
+            printf("Submit Transfer = %d\n", submit_transfer);
+
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
@@ -267,51 +272,67 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
     }
 }
 
-/*
-libusb_context *ctx = NULL; //a libusb session
- libusb_device_handle *dev_handle; //a device handle
- libusb_device **devs; //pointer to pointer of device, used to retrieve a list of devices
-    int r;
-    ssize_t number_of_connected_devices; //holding number of devices in list
-    r=libusb_init(&ctx);
-    if(r < 0)
-        QMessageBox::information(this,"Err","init err");
-    else{
-        if(dev_handle != NULL) {
-        libusb_release_interface(dev_handle,0);
-        libusb_close(dev_handle);
-        }
-        dev_handle= NULL;
-        libusb_set_debug(ctx, 3); //set verbosity level to 3, as suggested in the documentation
-        number_of_connected_devices = libusb_get_device_list(ctx, &devs); //get the list of devices
-        if (number_of_connected_devices<0)
-            QMessageBox::information(this,"DvcErr","Get Device Error");
-        else{
-        `QMessageBox::information(this,"number_of_connected_devices",QString::number(number_of_connected_devices));
-        ssize_t k; //for iterating through the list
-        int My_found_device_num=0;
-        int which_device;
-        for(k=0;k<number_of_connected_devices;k++){
-            libusb_device_descriptor desc;
-            int a = libusb_get_device_descriptor(devs[k], &desc);
-            if (a < 0)
-                QMessageBox::information(this,"err","failed to get device descriptor");
-            else{
-                QMessageBox::information(this,"inf","VendorID: "+QString::number(desc.idVendor));
-                QMessageBox::information(this,"inf","ProductID: "+QString::number(desc.idProduct));
-            }
-            if ( (desc.idVendor == VENDOR_ID) && (desc.idProduct == PRODUCT_ID)){
-                My_found_device_num++;
-                which_device=k;
-            }
-        }
-        if (My_found_device_num>1)
-            QMessageBox::information(this,"err","more than one device connected!");
-        else{
-        //dev_handle = libusb_open_device_with_vid_pid(ctx, VENDOR_ID, PRODUCT_ID); //these are vendorID and productID I found for my usb device
-        int b=libusb_open(devs[which_device],&dev_handle);
-            if (libusb_open(devs[which_device],&dev_handle) < 0)
-            QMessageBox::information(this,"err","cannot open device");
-        else{
-//REST OF MY CODE
-*/
+void error_info(int error_in_number)
+{
+    switch(error_in_number)
+    {
+    case LIBUSB_SUCCESS:
+        printf("Success\n");
+        break;
+
+    case LIBUSB_ERROR_IO:
+        printf("Error IO\n");
+        break;
+
+    case LIBUSB_ERROR_INVALID_PARAM:
+        printf("Invalid Parameters\n");
+        break;
+
+    case LIBUSB_ERROR_ACCESS:
+        printf("Error Access\n");
+        break;
+
+    case LIBUSB_ERROR_NO_DEVICE:
+        printf("No devices\n");
+        break;
+
+    case LIBUSB_ERROR_NOT_FOUND:
+        printf("No found\n");
+        break;
+
+    case LIBUSB_ERROR_BUSY:
+        printf("Busy\n");
+        break;
+
+    case LIBUSB_ERROR_TIMEOUT:
+        printf("Timeout\n");
+        break;
+
+    case LIBUSB_ERROR_OVERFLOW:
+        printf("Overflow\n");
+        break;
+
+    case LIBUSB_ERROR_PIPE:
+        printf("Pipe Error\n");
+        break;
+
+    case LIBUSB_ERROR_INTERRUPTED:
+        printf("Interrupted\n");
+        break;
+
+    case LIBUSB_ERROR_NO_MEM:
+        printf("No member\n");
+        break;
+
+    case LIBUSB_ERROR_NOT_SUPPORTED:
+        printf("Not supported\n");
+        break;
+
+    case LIBUSB_ERROR_OTHER:
+        printf("Other errors\n");
+        break;
+
+    default:
+
+    }
+}
