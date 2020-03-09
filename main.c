@@ -142,15 +142,14 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             int config_set_result = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
             libusb_set_iso_packet_lengths(transfer, libusb_get_max_iso_packet_size(device, epDescriptor.bEndpointAddress));
 
-            unsigned char buffer[libusb_iso];
             libusb_fill_iso_transfer(transfer,
                                      device_handle,
                                      epDescriptor.bEndpointAddress,
-                                     unsigned char *buffer,
-                                     int length,
-                                     int num_iso_packets,
-                                     libusb_transfer_cb_fn callback,
-                                     void *user_data,
+                                     (*transfer).buffer,
+                                     (*transfer).length,
+                                     (*transfer).num_iso_packets,
+                                     (*transfer).callback,
+                                     (*transfer).user_data,
                                      3000);
 
             printf("Configure Value Returned = %d\n", config_set_result);
