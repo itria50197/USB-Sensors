@@ -30,7 +30,6 @@ void discover_devices() // discover devices
     libusb_device *device;
 
     ssize_t num_detectedDevices = libusb_get_device_list(context, &list);
-    printf("%d\n", list);
     printf("num_detectedDevices = %d\n\n", num_detectedDevices);
 
     device_open_status = 0;
@@ -70,9 +69,7 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
 
     //device = libusb_get_device(device_handle);
     int open_result = libusb_open(device, &device_handle);
-    unsigned char data[4] = "abcd";
 
-    //printf("open_result = %d\n", open_result);
     switch(open_result)
     {
     case 0:
@@ -88,7 +85,6 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
         int deviceSpeed = 0;
         deviceSpeed = libusb_get_device_speed(device);
         printf("Device Speed: ");
-
 
         switch(deviceSpeed)
         {
@@ -125,7 +121,7 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
         {
         case 0:
             printf("Interface Claim Succeeds\n");
-            printf("Data to transfer: %s\n", data);
+            //printf("Data to transfer: %s\n", data);
 
             int actual;
             struct libusb_endpoint_descriptor epDescriptor;
@@ -151,7 +147,7 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
                                      128,
                                      (*transfer).num_iso_packets,
                                      (*transfer).callback,
-                                     data,
+                                     (*transfer).user_data,
                                      3000);
 
             int submit_transfer = libusb_submit_transfer(transfer);
