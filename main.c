@@ -30,6 +30,7 @@ void discover_devices() // discover devices
     libusb_device *device;
 
     ssize_t num_detectedDevices = libusb_get_device_list(context, &list);
+    printf("%d\n", list);
     printf("num_detectedDevices = %d\n\n", num_detectedDevices);
 
     device_open_status = 0;
@@ -69,7 +70,6 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
 
     //device = libusb_get_device(device_handle);
     int open_result = libusb_open(device, &device_handle);
-    //unsigned char *data[4] = "abcd";
     unsigned char data[4] = "abcd";
 
     //printf("open_result = %d\n", open_result);
@@ -142,19 +142,23 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             int config_set_result = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
             libusb_set_iso_packet_lengths(transfer, libusb_get_max_iso_packet_size(device, epDescriptor.bEndpointAddress));
 
+            uint16_t buffer[128] = {0};
+            memset(buffer, 0, sizeof(buffer));
             libusb_fill_iso_transfer(transfer,
                                      device_handle,
                                      epDescriptor.bEndpointAddress,
-                                     (*transfer).buffer,
-                                     (*transfer).length,
+                                     buffer,
+                                     128,
                                      (*transfer).num_iso_packets,
                                      (*transfer).callback,
-                                     (*transfer).user_data,
+                                     data,
                                      3000);
 
             int submit_transfer = libusb_submit_transfer(transfer);
 
             printf("Configure Value Returned = %d\n", config_set_result);
+            printf("Callback: \n", (*transfer).callback);
+            printf("Data = %s\n", (*transfer).user_data);
             printf("Data Buffer = %s\n", (*transfer).buffer);
             printf("Submit Transfer = %d\n", submit_transfer);
 
@@ -185,20 +189,6 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
                 printf("other error\n");
             }
 
-
-
-            //struct libusb_transfer *transfer_in = libusb_alloc_transfer(0);
-            //libusb_fill_bulk_transfer(transfer_in, device_handle, Transfer::endpoint, Transfer::buffer, Transfer::length, Transfer::callback, Transfer::user_data, 3000);
-/*
-            static void libusb_fill_bulk_transfer(struct libusb_transfer * 	transfer,
-                                                  libusb_device_handle * 	dev_handle,
-                                                  unsigned char 	endpoint,
-                                                  unsigned char * 	buffer,
-                                                  int 	length,
-                                                  libusb_transfer_cb_fn 	callback,
-                                                  void * 	user_data,
-                                                  unsigned int 	timeout);
-*/
             break;
 
         case LIBUSB_ERROR_NOT_FOUND:
@@ -333,6 +323,6 @@ void error_info(int error_in_number)
         break;
 
     default:
-
+        break;
     }
 }
