@@ -53,6 +53,7 @@ void discover_devices() // discover devices
             printf("\n");
         }
         libusb_free_device_list(list, num_detectedDevices);
+        libusb_release_interface(device_handle, 0);
     }
 }
 
@@ -68,6 +69,9 @@ With the above information in mind, the process of opening a device can be viewe
 void interested_device(libusb_device *device, libusb_device_handle **device_handle, libusb_context *context){
 
     //device = libusb_get_device(device_handle);
+    struct libusb_device_descriptor deviceDescriptor;
+    device_handle = libusb_open_device_with_vid_pid(device, deviceDescriptor.idVendor, deviceDescriptor.idProduct);
+    device = libusb_get_device(device_handle);
     int open_result = libusb_open(device, &device_handle);
 
     switch(open_result)
@@ -124,6 +128,10 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             //printf("Data to transfer: %s\n", data);
 
             int actual;
+            struct libusb_device_descriptor deviceDescriptor;
+            printf("ID Vendor: ID Product = %d:%d\n", deviceDescriptor.idVendor, deviceDescriptor.idProduct);
+            printf("Bus #: %d ; Device Address: %d\n", libusb_get_bus_number(device), libusb_get_device_address(device));
+
             struct libusb_endpoint_descriptor epDescriptor;
             printf("Endpoint Address: %d\n",epDescriptor.bEndpointAddress);
 
@@ -131,21 +139,27 @@ void interested_device(libusb_device *device, libusb_device_handle **device_hand
             printf("Interface Number: %d\n", ifDescriptor.bInterfaceNumber);
             printf("Endpoint Number (Used by This Interface): %d\n", ifDescriptor.bNumEndpoints);
 
+            uint8_t config_index;
+            struct libusb_config_descriptor *config;
+            int config_desc = libusb_get_config_descriptor(device, config_index, &config);
+            printf("config descriptor: %d\n", config_desc);
+
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             /*////////////////////////////////// To be Adjusted /////////////////////////////////////////*/
             struct libusb_transfer *transfer = libusb_alloc_transfer(0);
-            int config_set_result = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
+            //int config_set_result = libusb_set_configuration(device_handle, LIBUSB_TRANSFER_TYPE_ISOCHRONOUS);
+            int config_set_result = libusb_set_configuration(device_handle, LIBUSB_REQUEST_SET_CONFIGURATION);
             libusb_set_iso_packet_lengths(transfer, libusb_get_max_iso_packet_size(device, epDescriptor.bEndpointAddress));
 
             uint16_t buffer[128] = {0};
-            memset(buffer, 0, sizeof(buffer));
+            //memset(buffer, 0, sizeof(buffer));
             libusb_fill_iso_transfer(transfer,
                                      device_handle,
                                      epDescriptor.bEndpointAddress,
                                      buffer,
                                      128,
-                                     (*transfer).num_iso_packets,
+                                     10,
                                      (*transfer).callback,
                                      (*transfer).user_data,
                                      3000);
